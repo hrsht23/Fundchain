@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { Container } from 'semantic-ui-react';
+import { Container, Grid } from 'semantic-ui-react';
 import Header from "./Header";
+import Menu from "./Sidebar";
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
 
@@ -71,7 +72,7 @@ export default props => {
                 )
                 :
                 (
-	                <>
+	                <div>
 	                    <a href='/#' className='connect_wal' id="prepare">
 	                        <span id="btn-connect">{web3Provider.provider.selectedAddress}</span>
 	                    </a>
@@ -79,11 +80,26 @@ export default props => {
 	                    <a href='/#' className='connect_wal' id="prepare">
 	                        <button onClick={onDisConnect}>Disconnect</button>
 	                    </a>
-	                </>
+	                </div>
                 )
             }
-			<Header />
-			{props.children}
+			<Grid columns={2} divided>
+		        <Grid.Row>
+		          <Grid.Column width="1">
+		            <Menu />
+		          </Grid.Column>
+		          <Grid.Column width="9">
+		            <Header />
+		            {/* <HomeBody /> */}
+		            {/* <SaleList /> */}
+		            {/* <SaleBody /> */}
+		            {/* <CreateSale1 /> */}
+		            {/* <CreateSale2 /> */}
+		            {/* <CreateSale3 /> */}
+					{props.children}
+		          </Grid.Column>
+		        </Grid.Row>
+		      </Grid>
 		</Container>
 	);
 }
