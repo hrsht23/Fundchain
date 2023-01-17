@@ -1,9 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Step, Input, Button } from "semantic-ui-react";
 import { Link } from "../../../routes";
 import Layout from "../../../components/Layout";
 
 export default () => {
+  const [formData, setFormData] = useState({
+    tokenAddress: "",
+    tokenName: "",
+    tokenSymbol: "",
+    tokenDecimal: "",
+    tokenSupply: "",
+    tokenForDiscount: "",
+    startDate: "",
+    endDate: "",
+    maxDeposit: "",
+    minDeposit: "",
+    claimDays: "",
+    buyBackFee: "",
+    totalDiscount: "",
+    telegram: "",
+    twitter: "",
+    website: "",
+    logoUrl: "",
+  });
+  const handleChange = event => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    });
+  };
+  useEffect(() => {
+    console.log(formData)
+  }, [formData]);
   return (
     <Layout>
       <Grid columns={2}>
@@ -28,21 +56,59 @@ export default () => {
             </Step>
           </Step.Group>
           <h4>Enter Token Address:</h4>
-          <Input focus fluid placeholder="token address" />
+          <Input 
+            focus 
+            fluid 
+            placeholder="token address"
+            name="tokenAddress"
+            value={formData.tokenAddress}
+            onChange={handleChange} />
           <h4>Enter Token Name:</h4>
-          <Input focus fluid placeholder="token name" />
+          <Input 
+            focus 
+            fluid 
+            placeholder="token name"
+            name="tokenName"
+            value={formData.tokenName}
+            onChange={handleChange} />
           <h4>Enter Token Symbol:</h4>
-          <Input focus fluid placeholder="token symbol" />
+          <Input 
+            focus 
+            fluid 
+            placeholder="token symbol"
+            name="tokenSymbol"
+            value={formData.tokenSymbol}
+            onChange={handleChange} />
           <h4>Enter Token Decimal:</h4>
-          <Input focus fluid placeholder="token decimal" />
+          <Input 
+            focus 
+            fluid 
+            placeholder="token decimal"
+            name="tokenDecimal"
+            value={formData.tokenDecimal}
+            onChange={handleChange} />
           <h4>Enter Token Supply:</h4>
-          <Input focus fluid placeholder="Supply" />
+          <Input 
+            focus 
+            fluid 
+            placeholder="token supply"
+            name="tokenSupply"
+            value={formData.tokenSupply}
+            onChange={handleChange} />
           <h4>Number of tokens to offer in Discount:</h4>
-          <Input focus fluid placeholder="Example: 1000" />
+          <Input 
+            focus 
+            fluid 
+            placeholder="token address"
+            name="tokenForDiscount"
+            value={formData.tokenForDiscount}
+            onChange={handleChange} />
           <Link route="/pools/new/createsale2" >
-          <Button primary fluid>
-            Next
-          </Button>
+            <Button 
+              primary 
+              fluid>
+              Next
+            </Button>
           </Link>
         </Grid.Column>
         <Grid.Column>

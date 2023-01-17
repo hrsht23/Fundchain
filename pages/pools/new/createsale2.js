@@ -92,6 +92,11 @@ export default () => {
             Next
           </Button>
           </Link>
+          <Link route="/pools/new/createsale1">
+          <Button primary fluid>
+            Back
+          </Button>
+          </Link>
         </Grid.Column>
         <Grid.Column>
           <h3>Here we can place rules</h3>
