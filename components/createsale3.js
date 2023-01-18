@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Step, Input, Button, Dropdown } from "semantic-ui-react";
-import { Link } from "../../../routes";
-import Layout from "../../../components/Layout";
+import { Link } from "../routes";
+import Layout from "./Layout";
 
 export default () => {
   const countryOptions = [
@@ -13,43 +13,8 @@ export default () => {
     <Layout>
       <Grid columns={2}>
         <Grid.Column>
-          <Step.Group size="mini">
-            <Step completed>
-              <Step.Content>
-                <Step.Title>Step 1</Step.Title>
-              </Step.Content>
-            </Step>
-
-            <Step completed>
-              <Step.Content>
-                <Step.Title>Step 2</Step.Title>
-              </Step.Content>
-            </Step>
-
-            <Step active>
-              <Step.Content>
-                <Step.Title>Step 3</Step.Title>
-              </Step.Content>
-            </Step>
-          </Step.Group>
-          <h4>Telegram:</h4>
-          <Input focus fluid placeholder="Telegram" />
-          <h4>Twitter:</h4>
-          <Input focus fluid placeholder="Twitter" />
-          <h4>Website:</h4>
-          <Input focus fluid placeholder="Website" />
-          <br />
-          <Dropdown
-            placeholder="Promote"
-            fluid
-            search
-            selection
-            options={countryOptions}
-          />
-          <br />
-          <Button primary fluid>
-            Next
-          </Button>
+          <h2>Step 3</h2>
+          <h4>Preview</h4>
         </Grid.Column>
         <Grid.Column>
           <h3>Here we can place rules</h3>
