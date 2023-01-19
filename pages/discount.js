@@ -23,7 +23,7 @@ export default () => {
     <Layout>
       <Image floated="right" size="mini" src="/image/1.jpg" />
       <Image floated="right" size="mini" src="/image/1.jpg" />
-      <Link route="/pools/new/createsale1">
+      <Link route="/pools/new">
       <Button floated="right">Create Sale</Button>
       </Link>
       <Dropdown

@@ -66,18 +66,20 @@ export default props => {
 			{
                 web3Provider == null ?
                 (
-	                <a href='/#' className='connect_wal' id="prepare">
-	                    <button onClick={onConnect}>Connect</button>
+	                <a href='/' className='connect_wal' id="prepare">
+						<div style={{textAlign:'center'}}>
+	                    	<button onClick={onConnect}>Connect</button>
+						</div>
 	                </a>
                 )
                 :
                 (
 	                <div>
-	                    <a href='/#' className='connect_wal' id="prepare">
+	                    <a href='/' className='connect_wal' id="prepare">
 	                        <span id="btn-connect">{web3Provider.provider.selectedAddress}</span>
 	                    </a>
 
-	                    <a href='/#' className='connect_wal' id="prepare">
+	                    <a href='/' className='connect_wal' id="prepare">
 	                        <button onClick={onDisConnect}>Disconnect</button>
 	                    </a>
 	                </div>
