@@ -18,18 +18,16 @@ export default () => {
 		// 		</Link>
 		// 	</Menu.Menu>
 		// </Menu>
-		<div>
-	      <Header as="h3" block>
-	        <Image floated="right" size="mini" src="/image/1.jpg" />
-	        <Image floated="right" size="mini" src="/image/1.jpg" />
-	        <Image floated="right" size="mini" src="/image/1.jpg" />
-	        <Input
-	          size="mini"
-	          icon={{ name: "search", circular: true, link: true }}
-	          placeholder="Search..."
-	        />
-	      </Header>
-	    </div>
+		<Header as="h3" block>
+		<Image floated="right" size="mini" src="/image/1.jpg" />
+		<Image floated="right" size="mini" src="/image/1.jpg" />
+		<Image floated="right" size="mini" src="/image/1.jpg" />
+		<Input
+			size="mini"
+			icon={{ name: "search", circular: true, link: true }}
+			placeholder="Search..."
+		/>
+		</Header>
 
 	);
 };

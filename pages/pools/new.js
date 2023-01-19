@@ -25,7 +25,7 @@ export default () => {
 		telegram: "",
 		twitter: "",
 		website: "",
-		logoUrl: "",
+		logoUrl: null,
 	});
 	const FormTitles = ['Step 1', 'Step 2', 'Step 3'];
 	const PageDisplay = () => {

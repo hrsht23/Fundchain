@@ -84,7 +84,10 @@ export default ({formData, setFormData}) => {
             onChange={event => setFormData({...formData, website: event.target.value})} />
           <br />
           <h4>Upload Logo</h4>
-          <Button>Upload</Button>
+          <Input 
+            type="file"
+            onChange={event => setFormData({...formData, logoUrl: event.target.files[0]})} />
+          {formData.logoUrl && <p>{formData.logoUrl.name}</p>}
         </Grid.Column>
         <Grid.Column>
           <h3>Here we can place rules</h3>
