@@ -53,21 +53,24 @@ export default () => {
 				onClick={async () => {
 				if (page === FormTitles.length - 1) {
 					alert("FORM SUBMITTED");
+					console.log(formData);
 					const accounts = await web3.eth.getAccounts();
+					console.log(accounts[0])
 					await discountmain.methods.createPool([
-						formData.tokenAddress,
-						formData.tokenForDiscount,
-						formData.startTime,
-						formData.endTime,
-						formData.totalDiscount,
+						formData.tokenAddress.toString(),
+						formData.tokenForDiscount.toString(),
+						formData.startDate.toString(),
+						formData.endDate.toString(),
+						formData.totalDiscount.toString(),
 						accounts[0],
-						formData.minDeposit,
-						formData.maxDeposit,
-						formData.buyBackFee,
-						formData.claimDays,
-						formData.telegram
+						formData.minDeposit.toString(),
+						formData.maxDeposit.toString(),
+						formData.buyBackFee.toString(),
+						formData.claimDays.toString(),
+						formData.telegram.toString()
 					]).send({
-						from: accounts[0]
+						from: accounts[0],
+						value: '0'
 					})
 					Router.pushRoute('/');
 				} else {

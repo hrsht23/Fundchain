@@ -13,10 +13,10 @@ export default () => {
 		async function fetchPools() {
 			const getpools = await discountmain.methods.allPool().call();
 			setPools(getpools);
-			console.log(pools);
+			console.log(getpools);
 		}
 		fetchPools();
-	}, [pools])	
+	}, [])	
 	const mounted = useIsMounted();
 	const items = [
 		{
