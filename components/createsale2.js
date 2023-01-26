@@ -24,16 +24,16 @@ export default ({formData, setFormData}) => {
           <h2>Step 2</h2>
           <h4>Sale Start Date:</h4>
           <Input 
+            type="date"
             focus 
             placeholder="Start Date"
-            value={formData.startDate}
-            onChange={event => setFormData({...formData, startDate: event.target.value})} />
+            onChange={event => setFormData({...formData, startDate: (new Date(event.target.value)).getTime()})} />
           <h4>Sale End Date:</h4>
           <Input 
+            type="date"
             focus 
             placeholder="Start Date"
-            value={formData.endDate}
-            onChange={event => setFormData({...formData, endDate: event.target.value})} />
+            onChange={event => setFormData({...formData, endDate: (new Date(event.target.value)).getTime()})} />
           <h4>Minimum Deposit:</h4>
           <Input 
             focus 
