@@ -15,18 +15,22 @@ export default () => {
 	const mounted = useIsMounted();
 	const items = [
 		{
+			key: "1",
 			header: "8996",
 			meta: "Projects Launched"
 		},
 		{
+			key: "2",
 			header: "8996",
 			meta: "Projects Launched"
 		},
 		{
+			key: "3",
 			header: "8996",
 			meta: "Projects Launched"
 		},
 		{
+			key: "4",
 			header: "8996",
 			meta: "Projects Launched"
 		}

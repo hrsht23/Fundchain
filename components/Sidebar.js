@@ -19,22 +19,22 @@ export default class SideMenu extends Component {
         width="thin"
       >
         <Link route="/">
-          <Menu.Item as="a">
+          <Menu.Item>
             <Icon name="home" />
             Home
           </Menu.Item>
         </Link>
         <Link route="/discount">
-          <Menu.Item as="a">
+          <Menu.Item>
             <Icon name="gamepad" />
             Discount
           </Menu.Item>
         </Link>
-        <Menu.Item as="a">
+        <Menu.Item>
           <Icon name="camera" />
           NFTs
         </Menu.Item>
-        <Menu.Item as="a">
+        <Menu.Item>
           <Icon name="camera" />
           Promotions
         </Menu.Item>

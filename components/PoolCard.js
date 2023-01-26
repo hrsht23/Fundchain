@@ -38,7 +38,7 @@ export default (props) => {
                     <Icon name="twitter square" />
                     <Icon name="twitter square" />
                     <Icon name="twitter square" />
-                    <Link route="/pools/1">
+                    <Link route={`/pools/${props.poolAddress}`}>
                         <Button color="blue" floated="right">
                             View
                         </Button>

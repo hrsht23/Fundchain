@@ -23,6 +23,7 @@ export default (props) => {
                 else if(Math.round(new Date().getTime() / 1000) > summary[4] && Math.round(new Date().getTime() / 1000) < summary[5]) {status = "LIVE";}
                 else {status = "SALE ENDED";}
                 getSummaryList.push({
+                    poolAddress: props.poolsList[i],
                     startDate: summary[4],
                     endDate: summary[5],
                     promotion: "promoted💥",
@@ -42,6 +43,8 @@ export default (props) => {
             {
                 poolsSummary.map(item => {
                     return <PoolCard
+                        key={item.poolAddress}
+                        poolAddress={item.poolAddress}
                         promotion={item.promotion}
                         symbol={item.symbol}
                         name={item.name}

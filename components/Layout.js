@@ -17,7 +17,6 @@ if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
 		cacheProvider: true, // optional
 		providerOptions // required
 	});
-	console.log(web3Modal);
 } else {
 	console.log("Window is undefined")
 }
