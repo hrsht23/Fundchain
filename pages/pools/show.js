@@ -244,11 +244,28 @@
 // export default PoolShow;
 
 
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { useRouter } from "next/router";
 import { Grid, Image, Card, Progress, Input, Button } from "semantic-ui-react";
 import Layout from "../../components/Layout";
+import Pool from "../../ethereum/pool";
 
 export default () => {
+  const router = useRouter()
+  const poolAddress = router.asPath.split('/')[2]
+
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const summary = await Pool(poolAddress).methods.getSummary().call();
+      console.log(summary);
+      const [tokenName, tokenSymbol] = helper.fetchTokenDetails(summary[0]);
+      console.log(tokenName, tokenSymbol);
+    }
+    fetchData();
+  }, []);
+
   const items = [
     {
       // header: "8996",
