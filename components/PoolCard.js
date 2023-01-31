@@ -3,6 +3,7 @@ import { Card, Segment, Label, Progress, Icon, Button, Image } from "semantic-ui
 import {Link} from "../routes";
 
 export default (props) => {
+    const string = "QmVU99yGWfV4RetLc9zMKj3kHU7dfoMzGkp9rjDFoQHne3QmUbAkrPc8ZpBEULXRQpp6mB3ogidAxYMmNCfz8CGbRoQ3Qmf3gA71apphKhi8RRVBsA4e9MMU48dg5pNpmhsx4ptRKvQmcdHuH7Gs5ovftAcQ7yhFM3i6hiGYEvochbwgdvEpfGMt";
     function timeConverter(UNIX_timestamp){
         var a = new Date(UNIX_timestamp * 1000);
         var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -24,7 +25,7 @@ export default (props) => {
                     {props.promotion}
                 </Label>
                 <Card.Content>
-                    <Image floated="left" size="mini" src="/image/1.jpg" />
+                    <Image floated="left" size="mini" src={`https://ipfs.io/ipfs/${string.substring(0,46)}`} />
                     <Card.Header>{props.symbol}</Card.Header>
                     <Card.Meta>{props.name}</Card.Meta>
                     <Card.Description>Status: {props.status}</Card.Description>
@@ -35,9 +36,15 @@ export default (props) => {
                     </Progress>
                 </Card.Content>
                 <Card.Content extra>
-                    <Icon name="twitter square" />
-                    <Icon name="twitter square" />
-                    <Icon name="twitter square" />
+                    <Link route={`https://ipfs.io/ipfs/${string.substring(46,92)}`}>
+                        <Icon circular link name="twitter" size="large" />
+                    </Link>
+                    <Link route={`https://ipfs.io/ipfs/${string.substring(92,138)}`}>
+                        <Icon circular link name="telegram" size="large" />
+                    </Link>
+                    <Link route={`https://ipfs.io/ipfs/${string.substring(138,184)}`}>
+                        <Icon circular link name="globe" size="large" />
+                    </Link>
                     <Link route={`/pools/${props.poolAddress}`}>
                         <Button color="blue" floated="right">
                             View

@@ -1,10 +1,11 @@
 import { Router } from "../../routes";
-import React,  { useState} from "react";
+import React,  { useEffect, useState} from "react";
 import CreateSale1 from "../../components/createsale1";
 import CreateSale2 from "../../components/createsale2";
 import CreateSale3 from "../../components/createsale3";
 import discountmain from "../../ethereum/discountmain";
 import web3 from "../../ethereum/web3";
+import * as IPFS from "ipfs-core";
 
 export default () => {
 	const [page, setPage] = useState(0);
@@ -53,7 +54,13 @@ export default () => {
 				onClick={async () => {
 				if (page === FormTitles.length - 1) {
 					alert("FORM SUBMITTED");
+					const ipfs = await IPFS.create();
 					console.log(formData);
+					const cidLogo = await ipfs.add(formData.logoUrl);
+					const cidTwitter = await ipfs.add(formData.twitter);
+					const cidTelegram = await ipfs.add(formData.telegram);
+					const cidWebsite = await ipfs.add(formData.website);
+					console.log(cidLogo.path + cidTwitter.path + cidTelegram.path + cidWebsite.path);
 					const accounts = await web3.eth.getAccounts();
 					console.log(accounts[0])
 					await discountmain.methods.createPool([
@@ -67,7 +74,7 @@ export default () => {
 						formData.maxDeposit.toString(),
 						formData.buyBackFee.toString(),
 						formData.claimDays.toString(),
-						formData.telegram.toString()
+						cidLogo.path + cidTwitter.path + cidTelegram.path + cidWebsite.path
 					]).send({
 						from: accounts[0],
 						value: '0'

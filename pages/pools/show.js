@@ -249,33 +249,77 @@ import { useRouter } from "next/router";
 import { Grid, Image, Card, Progress, Input, Button } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import Pool from "../../ethereum/pool";
+import Token from "../../ethereum/token";
+import Countdown from "../../components/Countdown";
 
 export default () => {
+  const [poolSummary, setPoolSummary] = useState({});
   const router = useRouter()
-  const poolAddress = router.asPath.split('/')[2]
+  const poolAddress = router.asPath.split('/')[2];
 
-  
+  const fetchTokenDetails = async (tokenAddress) => {
+		const tokenInstance = Token(tokenAddress);
+		const tokenName = await tokenInstance.methods.name().call();
+		const tokenSymbol = await tokenInstance.methods.symbol().call();
+		return [tokenName, tokenSymbol];
+	}
 
   useEffect(() => {
     const fetchData = async () => {
       const summary = await Pool(poolAddress).methods.getSummary().call();
-      console.log(summary);
-      const [tokenName, tokenSymbol] = helper.fetchTokenDetails(summary[0]);
-      console.log(tokenName, tokenSymbol);
+      const [tokenName, tokenSymbol] = await fetchTokenDetails(summary[0]);
+      setPoolSummary({
+        poolAddress: poolAddress,
+        tokenAddress: summary[0],
+        totalSupply: summary[1],
+        tokensSold: summary[2],
+        tokensAvailable: summary[3],
+        startDate: summary[4],
+        endDate: summary[5],
+        burnEnabled: summary[6],
+        manualBuyBack: !summary[7],
+        buyBackPercent: summary[8],
+        manager: summary[9],
+        minDeposit: summary[10],
+        maxDeposit: summary[11],
+        alreadySold: (summary[2] / summary[1]) * 100,
+        tokenName: tokenName,
+        tokenSymbol: tokenSymbol
+      });
     }
     fetchData();
   }, []);
+  function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = String(date).padStart(2, "0") + ' ' + month + ' ' + year + ' ' + String(hour).padStart(2, "0") + ':' + String(min).padStart(2, "0") + ':' + String(sec).padStart(2, "0") ;
+    return time;
+  }
+  const startDate = timeConverter(poolSummary.startDate);
+  const endDate = timeConverter(poolSummary.endDate);
+  let burnEnabled, manualBuyBack;
+  poolSummary.burnEnabled ? burnEnabled = "YES" : burnEnabled = "NO";
+  poolSummary.manualBuyBack ? manualBuyBack = "YES" : manualBuyBack = "NO";
 
   const items = [
     {
+      key:"1",
       // header: "8996",
       meta: "Twitter"
     },
     {
+      key:"2",
       // header: "8996",
       meta: "Telegram"
     },
     {
+      key:"3",
       // header: "8996",
       meta: "Website"
     }
@@ -285,11 +329,11 @@ export default () => {
       <h3>Discount Sale Detail</h3>
       <Grid columns={2}>
         <Grid.Row>
-          <Card fluid header="Option 1">
+          <Card fluid>
             <Card.Content>
               <Image floated="left" size="mini" src="/image/1.jpg" />
-              <Card.Header>GHT</Card.Header>
-              <Card.Meta>GunHunter</Card.Meta>
+              <Card.Header>{poolSummary.tokenSymbol}</Card.Header>
+              <Card.Meta>{poolSummary.tokenName}</Card.Meta>
             </Card.Content>
           </Card>
         </Grid.Row>
@@ -302,24 +346,15 @@ export default () => {
               list items will be saved. Learn more Chrome won’t save the
               following information:
             </p>
-            <Progress percent={20} success>
-              Already Sold: 20%
+            <Progress percent={poolSummary.alreadySold} success>
+              Already Sold: {poolSummary.alreadySold}%
             </Progress>
             <Input focus fluid placeholder="Search..." />
-            <p>You will get GHT Tokens!</p>
+            <p>You will get {poolSummary.tokenSymbol} Tokens!</p>
             <Button fluid primary>
               Contribute
             </Button>
-            <p>Discount Sale Ends in: </p>
-            <Button.Group>
-              <Button size="mini">06</Button>
-              <Button.Or text=":" />
-              <Button size="mini">08</Button>
-              <Button.Or text=":" />
-              <Button size="mini">05</Button>
-              <Button.Or text=":" />
-              <Button size="mini">22</Button>
-            </Button.Group>
+            <Countdown endDate={poolSummary.endDate} />
             <h4>
               <strong>Disclaimer</strong>:
             </h4>
@@ -332,23 +367,23 @@ export default () => {
           </Grid.Column>
           <Grid.Column>
             <p>
-              Discount Sale Address : 0x396D67081612b34c3838eE06072bcf779d5cC9C2
+              Discount Sale Address : {poolSummary.poolAddress}
             </p>
-            <p>Token Address : 0x396D67081612b34c3838eE06072bcf779d5cC9C2</p>
-            <p>Number of Tokens allocated for discount : 10,000,000</p>
-            <p>Number of tokens sold : 5,000,000</p>
-            <p>Number of tokens available : 5,000,000</p>
-            <p>Start Date : 15-11-2021 9:00 PM</p>
-            <p>End Date : 16-11-2021 9:00 PM</p>
-            <p>Burn Enabled : Yes</p>
-            <p>Manual Buyback Enabled : Yes</p>
-            <p>Pancakeswap Buyback : 10%</p>
+            <p>Token Address : {poolSummary.tokenAddress}</p>
+            <p>Number of Tokens allocated for discount : {poolSummary.totalSupply}</p>
+            <p>Number of tokens sold : {poolSummary.tokensSold}</p>
+            <p>Number of tokens available : {poolSummary.tokensAvailable}</p>
+            <p>Start Date : {startDate}</p>
+            <p>End Date : {endDate}</p>
+            <p>Burn Enabled : {burnEnabled}</p>
+            <p>Manual Buyback Enabled : {manualBuyBack}</p>
+            <p>Pancakeswap Buyback : {poolSummary.buyBackPercent}</p>
             <p>
               Wallet Address of Discount Created :
-              0x396D67081612b34c3838eE06072bcf779d5cC9C2
+              {poolSummary.manager}
             </p>
-            <p>Minimum Tokens to buy : 20,000</p>
-            <p>Maximum Tokens to buy : 500,000</p>
+            <p>Minimum Tokens to buy : {poolSummary.minDeposit}</p>
+            <p>Maximum Tokens to buy : {poolSummary.maxDeposit}</p>
           </Grid.Column>
         </Grid.Row>
       </Grid>

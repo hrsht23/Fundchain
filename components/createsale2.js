@@ -10,6 +10,7 @@ import {
 } from "semantic-ui-react";
 import { Link } from "../routes";
 import Layout from "./Layout";
+// import ipfs from "../ethereum/ipfs";
 
 export default ({formData, setFormData}) => {
   const style = {
@@ -17,6 +18,16 @@ export default ({formData, setFormData}) => {
     opacity: 0.7,
     padding: "1em"
   };
+  const captureFile = async (event) => {
+    event.preventDefault();
+    setFormData({...formData, logoUrl: event.target.files[0]});
+    const file = event.target.files[0];
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = () => {
+      setFormData({...formData, logoUrl: reader.result });
+    };   
+  }
   return (
     <Layout>
       <Grid columns={2}>
@@ -51,7 +62,8 @@ export default ({formData, setFormData}) => {
             focus 
             placeholder="Start Date"
             value={formData.claimDays}
-            onChange={event => setFormData({...formData, claimDays: event.target.value})} />
+            // onChange={event => setFormData({...formData, claimDays: event.target.value})} 
+          />
           <h4>Buyback Fee:</h4>
           <Input 
             focus 
@@ -86,7 +98,9 @@ export default ({formData, setFormData}) => {
           <h4>Upload Logo</h4>
           <Input 
             type="file"
-            onChange={event => setFormData({...formData, logoUrl: event.target.files[0]})} />
+            onChange={captureFile}
+            // onChange={event => setFormData({...formData, logoUrl: event.target.files[0]})} 
+          />
           {formData.logoUrl && <p>{formData.logoUrl.name}</p>}
         </Grid.Column>
         <Grid.Column>
