@@ -10,7 +10,6 @@ import {
 } from "semantic-ui-react";
 import { Link } from "../routes";
 import Layout from "./Layout";
-// import ipfs from "../ethereum/ipfs";
 
 export default ({formData, setFormData}) => {
   const style = {
@@ -76,18 +75,18 @@ export default ({formData, setFormData}) => {
             placeholder="Start Date"
             value={formData.totalDiscount}
             onChange={event => setFormData({...formData, totalDiscount: event.target.value})} />
-          <h4>Telegram:</h4>
-          <Input 
-            focus 
-            placeholder="Start Date"
-            value={formData.telegram}
-            onChange={event => setFormData({...formData, telegram: event.target.value})} />
           <h4>Twitter:</h4>
           <Input 
             focus 
             placeholder="Start Date"
             value={formData.twitter}
             onChange={event => setFormData({...formData, twitter: event.target.value})} />
+          <h4>Telegram:</h4>
+          <Input 
+            focus 
+            placeholder="Start Date"
+            value={formData.telegram}
+            onChange={event => setFormData({...formData, telegram: event.target.value})} />
           <h4>Website:</h4>
           <Input 
             focus 

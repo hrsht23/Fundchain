@@ -54,7 +54,7 @@ export default () => {
 				onClick={async () => {
 				if (page === FormTitles.length - 1) {
 					alert("FORM SUBMITTED");
-					const ipfs = await IPFS.create();
+					const ipfs = await IPFS.create({repo: 'ok'+ Math.random()});
 					console.log(formData);
 					const cidLogo = await ipfs.add(formData.logoUrl);
 					const cidTwitter = await ipfs.add(formData.twitter);
