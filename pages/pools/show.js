@@ -250,10 +250,13 @@ import { Grid, Image, Card, Progress, Input, Button } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import Pool from "../../ethereum/pool";
 import Token from "../../ethereum/token";
+import web3 from "../../ethereum/web3";
 import Countdown from "../../components/Countdown";
+import {Router} from "../../routes";
 
 export default () => {
   const [poolSummary, setPoolSummary] = useState({});
+  const [contriAmount, setContriAmount] = useState('');
   const router = useRouter()
   const poolAddress = router.asPath.split('/')[2];
 
@@ -300,6 +303,54 @@ export default () => {
     var sec = a.getSeconds();
     var time = String(date).padStart(2, "0") + ' ' + month + ' ' + year + ' ' + String(hour).padStart(2, "0") + ':' + String(min).padStart(2, "0") + ':' + String(sec).padStart(2, "0") ;
     return time;
+  }
+  const handleContribute = async (event) => {
+    event.preventDefault();
+    const pool = Pool(poolAddress);
+    try {
+			const accounts = await web3.eth.getAccounts();
+      console.log("in try", accounts[0]);
+			await pool.methods.swap().send({
+				from: accounts[0],
+				value: web3.utils.toWei(contriAmount, 'ether')
+			});
+
+			Router.replaceRoute(`/pools/${poolAddress}`);
+		} catch(err) {
+      console.log("in catch", err);
+		}
+  }
+  const handleFinalize = async () => {
+    const pool = Pool(poolAddress);
+    const accounts = await web3.eth.getAccounts();
+    try {
+      await pool.methods.buyBack().send({from: accounts[0]});
+    } catch(err) {
+      console.log("in catch", err);
+    }
+    console.log(pool.methods.buyBackState().call());
+  }
+  const handleClaim = async () => {
+    const pool = Pool(poolAddress);
+    const accounts = await web3.eth.getAccounts();
+
+    try {
+      await pool.methods.claim().send({from: accounts[0]});
+    } catch(err) {
+
+    }
+    console.log(pool.methods.claimState().call());
+  }
+  const handleBurn = async () => {
+    const pool = Pool(poolAddress);
+    const accounts = await web3.eth.getAccounts();
+
+    try {
+      await pool.methods.burn().send({from: accounts[0]});
+    } catch(err) {
+
+    }
+    console.log(pool.methods.burnState().call());
   }
   const startDate = timeConverter(poolSummary.startDate);
   const endDate = timeConverter(poolSummary.endDate);
@@ -349,10 +400,38 @@ export default () => {
             <Progress percent={poolSummary.alreadySold} success>
               Already Sold: {poolSummary.alreadySold}%
             </Progress>
-            <Input focus fluid placeholder="Search..." />
+            <Input 
+              focus 
+              fluid 
+              placeholder="Enter Amount"
+              value={contriAmount}
+              onChange={event=>setContriAmount(event.target.value)} />
             <p>You will get {poolSummary.tokenSymbol} Tokens!</p>
-            <Button fluid primary>
+            <Button 
+              fluid 
+              primary
+              onClick={handleContribute}
+              >
               Contribute
+            </Button>
+            <br />
+            <Button 
+              primary
+              onClick={handleFinalize}
+              >
+              Finalize
+            </Button>
+            <Button 
+              primary
+              onClick={handleClaim}
+              >
+              Claim
+            </Button>
+            <Button 
+              primary
+              onClick={handleBurn}
+              >
+              Burn
             </Button>
             <Countdown endDate={poolSummary.endDate} />
             <h4>

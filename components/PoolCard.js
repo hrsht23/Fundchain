@@ -11,7 +11,7 @@ export default (props) => {
     useEffect(()=>{
         const fetchLink = async () => {
             const string = "QmZKQhXyTPKNfwXoQ7G84ooDdq1AoAjtZBERW3YmT2K3ckQmP5FRskas8WQBXdouhsebEHa7CEAVne3VgSGr2pXoobb3QmYVgyB3ben4PapyESH55dPA3Tkp46KFX5tcj8JdXPQyQTQmRN4kc32mWNCPzaFYXh9wuT6tjy5RoWdCW6qbJeJdCx9E";
-            const ipfs = await IPFS.create();
+            const ipfs = await IPFS.create({repo: 'ok'+ Math.random()});
             const decoder = new TextDecoder();
             const cidTwitter = string.substring(46, 92);
             const streamTwitter = ipfs.cat(cidTwitter);
