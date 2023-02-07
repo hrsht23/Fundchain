@@ -22,8 +22,10 @@ export default ({ formData, setFormData }) => {
 
   useEffect(() => {
     if (tokenAddress.length === 42) {
-      if (web3.utils.isAddress(tokenAddress))
+      if (web3.utils.isAddress(tokenAddress)) {
+        setError("");
         fetchTokenDetails(tokenAddress);
+      }
       else {
         setError("Invalid Address");
         console.log(error);

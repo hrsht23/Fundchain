@@ -3,7 +3,7 @@ import { Grid, Step, Input, Button, Dropdown } from "semantic-ui-react";
 import { Link } from "../routes";
 import Layout from "./Layout";
 
-export default () => {
+export default ({formData, setFormData}) => {
   const countryOptions = [
     { key: "af", value: "af", text: "Now" },
     { key: "ax", value: "ax", text: "Best" },
@@ -15,6 +15,13 @@ export default () => {
         <Grid.Column>
           <h2>Step 3</h2>
           <h4>Preview</h4>
+          <p>Token Address : {formData.tokenAddress}</p>
+          <p>Number of Tokens allocated for discount : {formData.tokenForDiscount}</p>
+          <p>Start Date : {formData.startDate}</p>
+          <p>End Date : {formData.endDate}</p>
+          <p>Pancakeswap Buyback : {formData.buyBackFee}</p>
+          <p>Minimum Tokens to buy : {formData.minDeposit}</p>
+          <p>Maximum Tokens to buy : {formData.maxDeposit}</p>
         </Grid.Column>
         <Grid.Column>
           <h3>Here we can place rules</h3>

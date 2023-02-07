@@ -34,11 +34,13 @@ export default () => {
 
   return (
     <Layout>
-      <Image floated="right" size="mini" alt="image" src="/image/1.jpg" />
-      <Image floated="right" size="mini" alt="image" src="/image/1.jpg" />
       <Link route='/pools/new'>
         <Button floated="right">Create Sale</Button>
       </Link>
+      <div style={{float: "right"}}>
+        <Icon link name="box" size="big" />
+        <Icon link name="bars" size="big" />
+      </div>
       <Dropdown
         placeholder="Promote"
         search

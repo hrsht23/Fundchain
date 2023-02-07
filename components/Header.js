@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Header, Input, Image } from 'semantic-ui-react';
+import { Menu, Header, Input, Image, Icon } from 'semantic-ui-react';
 import { Link } from '../routes';
 
 export default () => {
@@ -19,9 +19,11 @@ export default () => {
 		// 	</Menu.Menu>
 		// </Menu>
 		<Header as="h3" block>
-		<Image floated="right" size="mini" src="/image/1.jpg" />
-		<Image floated="right" size="mini" src="/image/1.jpg" />
-		<Image floated="right" size="mini" src="/image/1.jpg" />
+		<div style={{float: "right"}}>
+			<Icon link name="bell outline" size="large" />
+			<Icon link name="telegram" size="large" />
+			<Icon link name="question circle outline" size="large" />
+		</div>
 		<Input
 			size="mini"
 			icon={{ name: "search", circular: true, link: true }}

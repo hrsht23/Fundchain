@@ -246,9 +246,10 @@
 
 import React, {useState, useEffect} from "react";
 import { useRouter } from "next/router";
-import { Grid, Image, Card, Progress, Input, Button } from "semantic-ui-react";
+import { Grid, Image, Card, Progress, Input, Button, Radio, TextArea } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import Pool from "../../ethereum/pool";
+import discountmain from "../../ethereum/discountmain";
 import Token from "../../ethereum/token";
 import web3 from "../../ethereum/web3";
 import Countdown from "../../components/Countdown";
@@ -257,8 +258,10 @@ import {Router} from "../../routes";
 export default () => {
   const [poolSummary, setPoolSummary] = useState({});
   const [contriAmount, setContriAmount] = useState('');
+  const [isWhiteList, setIsWhiteList] = useState();
   const router = useRouter()
   const poolAddress = router.asPath.split('/')[2];
+  const string = "QmVU99yGWfV4RetLc9zMKj3kHU7dfoMzGkp9rjDFoQHne3QmUbAkrPc8ZpBEULXRQpp6mB3ogidAxYMmNCfz8CGbRoQ3Qmf3gA71apphKhi8RRVBsA4e9MMU48dg5pNpmhsx4ptRKvQmcdHuH7Gs5ovftAcQ7yhFM3i6hiGYEvochbwgdvEpfGMt";
 
   const fetchTokenDetails = async (tokenAddress) => {
 		const tokenInstance = Token(tokenAddress);
@@ -266,10 +269,38 @@ export default () => {
 		const tokenSymbol = await tokenInstance.methods.symbol().call();
 		return [tokenName, tokenSymbol];
 	}
-
+  function bindEvent() {
+    let listOfWLAddresses = "";
+    document.getElementById("addWhiteList").onclick = async function addWhiteList(event){
+      event.preventDefault();
+      const listOfWLAddressesArray = listOfWLAddresses.split(',');
+      if (listOfWLAddresses !== "") {
+        const accounts = await web3.eth.getAccounts();
+        await discountmain.methods.addWhiteListForPool(
+          poolAddress,
+          listOfWLAddressesArray
+        ).send({
+          from: accounts[0]
+        })
+      }
+    }
+    document.getElementById("whiteListAddresses").onchange = function handleAddWhiteListAddresses(event){
+      listOfWLAddresses += event.target.value;
+    }
+  }
   useEffect(() => {
     const fetchData = async () => {
       const summary = await Pool(poolAddress).methods.getSummary().call();
+      const whiteListStatus = await discountmain.methods.isWhiteList(poolAddress).call();
+      setIsWhiteList(whiteListStatus);
+      if (whiteListStatus) {
+        const whiteListAddressLength = await discountmain.methods.whiteListPoolLength(poolAddress).call();
+        const elm1 = document.getElementById("whiteListCount");
+        const elm2 = document.getElementById("addWhiteList");
+        elm1.innerHTML = `<p>There is/are ${whiteListAddressLength} whitelist addresses</p>`;
+        elm2.innerHTML = '<div><textarea id=\"whiteListAddresses\" cols="30" rows="10"></textarea><br /><Button id=\"addWhiteList\">Add</Button></div>';
+        bindEvent();
+      }
       const [tokenName, tokenSymbol] = await fetchTokenDetails(summary[0]);
       setPoolSummary({
         poolAddress: poolAddress,
@@ -352,6 +383,31 @@ export default () => {
     }
     console.log(pool.methods.burnState().call());
   }
+  
+  const handleChange = async (event) => {
+    event.preventDefault();
+    if (!isWhiteList) {
+      const whiteListAddressLength = await discountmain.methods.whiteListPoolLength(poolAddress).call();
+      const elm1 = document.getElementById("whiteListCount");
+      const elm2 = document.getElementById("addWhiteList");
+      elm1.innerHTML = `<p>There is/are ${whiteListAddressLength} whitelist addresses</p>`;
+      elm2.innerHTML = '<div><textarea id=\"whiteListAddresses\" cols="30" rows="10"></textarea><br /><Button id=\"addWhiteList\">Add</Button></div>';
+      bindEvent();
+    } else {
+      const elm1 = document.getElementById("whiteListCount");
+      const elm2 = document.getElementById("addWhiteList");
+      elm1.innerHTML = "";
+      elm2.innerHTML = "";
+    }
+    const accounts = await web3.eth.getAccounts();
+		await discountmain.methods.poolWhiteListUpdate(
+			poolAddress,
+			!isWhiteList
+		).send({
+			from: accounts[0]
+		})
+    setIsWhiteList(!isWhiteList);
+  }
   const startDate = timeConverter(poolSummary.startDate);
   const endDate = timeConverter(poolSummary.endDate);
   let burnEnabled, manualBuyBack;
@@ -382,7 +438,7 @@ export default () => {
         <Grid.Row>
           <Card fluid>
             <Card.Content>
-              <Image floated="left" size="mini" src="/image/1.jpg" />
+              <Image floated="left" size="mini" src={`https://ipfs.io/ipfs/${string.substring(0,46)}`} />
               <Card.Header>{poolSummary.tokenSymbol}</Card.Header>
               <Card.Meta>{poolSummary.tokenName}</Card.Meta>
             </Card.Content>
@@ -433,6 +489,20 @@ export default () => {
               >
               Burn
             </Button>
+            <Radio
+                label='Enable Whitelist'
+                name='radioGroup'
+                checked={isWhiteList}
+                onChange={handleChange}
+            />
+            <Radio
+                label='Disable Whitelist'
+                name='radioGroup'
+                checked={!isWhiteList}
+                onChange={handleChange}
+            />
+            <div id="whiteListCount"></div>
+            <div id="addWhiteList"></div>
             <Countdown endDate={poolSummary.endDate} />
             <h4>
               <strong>Disclaimer</strong>:
