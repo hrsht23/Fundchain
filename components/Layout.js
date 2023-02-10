@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid } from 'semantic-ui-react';
+import { Container, Grid, Segment } from 'semantic-ui-react';
 import Header from "./Header";
 import Menu from "./Sidebar";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { useIsMounted } from "../pages/hooks/useIsMounted";
+import style from "../css/Layout.module.css";
 
 const providerOptions = {
 
@@ -63,42 +64,41 @@ export default props => {
 	return (
 		<>
 			{mounted ? (
-				<Container>
+				<>
 					<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
-					{
-						web3Provider == null ?
-							(
-								<div style={{ textAlign: 'center' }}>
-									<a href='/' className='connect_wal' id="prepare">
-										<button onClick={onConnect}>Connect</button>
-									</a>
-								</div>
-							)
-							:
-							(
-								<div>
-									<a href='/' className='connect_wal' id="prepare">
-										<span id="btn-connect">{web3Provider.provider.selectedAddress}</span>
-									</a>
+					
+					<Grid column={2} padded>
+						<Grid.Column width={2}>
+							<Menu visible={true}/>
+						</Grid.Column>
+						<Grid.Column width={14} className={style.any}>
+							<Header />
+							{
+								web3Provider == null ?
+									(
+										<div style={{ textAlign: 'center' }}>
+											<a href='/' className='connect_wal' id="prepare">
+												<button onClick={onConnect}>Connect</button>
+											</a>
+										</div>
+									)
+									:
+									(
+										<div>
+											<a href='/' className='connect_wal' id="prepare">
+												<span id="btn-connect">{web3Provider.provider.selectedAddress}</span>
+											</a>
 
-									<a href='/' className='connect_wal' id="prepare">
-										<button onClick={onDisConnect}>Disconnect</button>
-									</a>
-								</div>
-							)
-					}
-					<Grid columns={2} divided>
-						<Grid.Row>
-							<Grid.Column width="1">
-								<Menu />
-							</Grid.Column>
-							<Grid.Column width="9">
-								<Header />
-								{props.children}
-							</Grid.Column>
-						</Grid.Row>
+											<a href='/' className='connect_wal' id="prepare">
+												<button onClick={onDisConnect}>Disconnect</button>
+											</a>
+										</div>
+									)
+							}
+							{props.children}
+						</Grid.Column>
 					</Grid>
-				</Container>
+				</>
 			) : null}
 		</>
 	);

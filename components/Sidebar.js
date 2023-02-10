@@ -2,20 +2,20 @@ import React, { Component } from "react";
 import { Menu, Sidebar, Segment, Icon, Header, Image } from "semantic-ui-react";
 import { Link } from '../routes';
 
-export default class SideMenu extends Component {
-  state = { activeItem: "Home" };
+export default ({visible}) => {
+  // let state = { activeItem: "Home" };
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  // const handleItemClick = (e, { name }) => state = { activeItem: name };
 
-  render() {
+ 
     return (
       <Sidebar
         as={Menu}
-        animation="overlay"
+        animation="slide along"
         icon="labeled"
         inverted
         vertical
-        visible
+        visible={visible}
         width="thin"
       >
         <Link route="/">
@@ -41,4 +41,4 @@ export default class SideMenu extends Component {
       </Sidebar>
     );
   }
-}
+
