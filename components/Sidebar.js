@@ -20,22 +20,27 @@ export default ({visible}) => {
       >
         <Link route="/">
           <Menu.Item>
+            <h1>Discount<br />Sales</h1>
+          </Menu.Item>
+        </Link>
+        <Link route="/">
+          <Menu.Item>
             <Icon name="home" />
             Home
           </Menu.Item>
         </Link>
         <Link route="/discount">
           <Menu.Item>
-            <Icon name="gamepad" />
+            <Icon name="setting" />
             Discount
           </Menu.Item>
         </Link>
         <Menu.Item>
-          <Icon name="camera" />
+          <Icon name="rocket" />
           NFTs
         </Menu.Item>
         <Menu.Item>
-          <Icon name="camera" />
+          <Icon name="fire" />
           Promotions
         </Menu.Item>
       </Sidebar>

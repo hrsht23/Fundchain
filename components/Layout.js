@@ -6,6 +6,7 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { useIsMounted } from "../pages/hooks/useIsMounted";
 import style from "../css/Layout.module.css";
+import { Web3Button } from "@web3modal/react";
 
 const providerOptions = {
 
@@ -24,42 +25,42 @@ if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
 
 export default props => {
 
-	const [web3Provider, setWeb3Provider] = useState(null);
+	// const [web3Provider, setWeb3Provider] = useState(null);
 	const mounted = useIsMounted();
-	async function onConnect() {
-		try {
-			web3Modal = new Web3Modal({ cacheProvider: true, providerOptions, disableInjectedProvider: false });
-			const web3ModalInstance = await web3Modal.connect();
-			const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance);
-			if (web3ModalProvider) {
-				setWeb3Provider(web3ModalProvider);
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	}
+	// async function onConnect() {
+	// 	try {
+	// 		web3Modal = new Web3Modal({ cacheProvider: true, providerOptions, disableInjectedProvider: false });
+	// 		const web3ModalInstance = await web3Modal.connect();
+	// 		const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance);
+	// 		if (web3ModalProvider) {
+	// 			setWeb3Provider(web3ModalProvider);
+	// 		}
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// }
 
 
 	// hook to automatically connect to the cached provider
-	useEffect(() => {
-		if (web3Modal.cachedProvider) {
-			onConnect();
-		}
-	}, [])
+	// useEffect(() => {
+	// 	if (web3Modal.cachedProvider) {
+	// 		onConnect();
+	// 	}
+	// }, [])
 
-	// handle page refresh
-	const refreshState = () => {
-		setWeb3Provider();
-	};
+	// // handle page refresh
+	// const refreshState = () => {
+	// 	setWeb3Provider();
+	// };
 
-	const onDisConnect = async () => {
-		web3Modal = new Web3Modal({
-			providerOptions,
-			cacheProvider: true,
-		})
-		await web3Modal.clearCachedProvider();
-		refreshState();
-	};
+	// const onDisConnect = async () => {
+	// 	web3Modal = new Web3Modal({
+	// 		providerOptions,
+	// 		cacheProvider: true,
+	// 	})
+	// 	await web3Modal.clearCachedProvider();
+	// 	refreshState();
+	// };
 
 	return (
 		<>
@@ -73,28 +74,7 @@ export default props => {
 						</Grid.Column>
 						<Grid.Column width={14} className={style.any}>
 							<Header />
-							{
-								web3Provider == null ?
-									(
-										<div style={{ textAlign: 'center' }}>
-											<a href='/' className='connect_wal' id="prepare">
-												<button onClick={onConnect}>Connect</button>
-											</a>
-										</div>
-									)
-									:
-									(
-										<div>
-											<a href='/' className='connect_wal' id="prepare">
-												<span id="btn-connect">{web3Provider.provider.selectedAddress}</span>
-											</a>
-
-											<a href='/' className='connect_wal' id="prepare">
-												<button onClick={onDisConnect}>Disconnect</button>
-											</a>
-										</div>
-									)
-							}
+							<Web3Button />
 							{props.children}
 						</Grid.Column>
 					</Grid>

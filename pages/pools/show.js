@@ -254,11 +254,16 @@ import Token from "../../ethereum/token";
 import web3 from "../../ethereum/web3";
 import Countdown from "../../components/Countdown";
 import {Router} from "../../routes";
+import {Link} from "../../routes";
+import * as IPFS from "ipfs-core";
 
 export default () => {
   const [poolSummary, setPoolSummary] = useState({});
   const [contriAmount, setContriAmount] = useState('');
   const [isWhiteList, setIsWhiteList] = useState();
+  const [twitterLink, setTwitterLink] = useState('');
+  const [telegramLink, setTelegramLink] = useState('');
+  const [websiteLink, setWebsiteLink] = useState('');
   const router = useRouter()
   const poolAddress = router.asPath.split('/')[2];
   const string = "QmVU99yGWfV4RetLc9zMKj3kHU7dfoMzGkp9rjDFoQHne3QmUbAkrPc8ZpBEULXRQpp6mB3ogidAxYMmNCfz8CGbRoQ3Qmf3gA71apphKhi8RRVBsA4e9MMU48dg5pNpmhsx4ptRKvQmcdHuH7Gs5ovftAcQ7yhFM3i6hiGYEvochbwgdvEpfGMt";
@@ -288,6 +293,35 @@ export default () => {
       listOfWLAddresses += event.target.value;
     }
   }
+  useEffect(() => {
+    const fetchLink = async () => {
+        const string = "QmZKQhXyTPKNfwXoQ7G84ooDdq1AoAjtZBERW3YmT2K3ckQmP5FRskas8WQBXdouhsebEHa7CEAVne3VgSGr2pXoobb3QmYVgyB3ben4PapyESH55dPA3Tkp46KFX5tcj8JdXPQyQTQmRN4kc32mWNCPzaFYXh9wuT6tjy5RoWdCW6qbJeJdCx9E";
+        const ipfs = await IPFS.create({repo: 'ok'+ Math.random()});
+        const decoder = new TextDecoder();
+        const cidTwitter = string.substring(46, 92);
+        const streamTwitter = ipfs.cat(cidTwitter);
+        let twitterLink_ = '';
+        for await (const chunk of streamTwitter) {
+            twitterLink_ += decoder.decode(chunk, { stream: true });
+        }
+        const cidTelegram = string.substring(92, 138)
+        const streamTelegram = ipfs.cat(cidTelegram);
+        let telegramLink_ = '';
+        for await (const chunk of streamTelegram) {
+            telegramLink_ += decoder.decode(chunk, { stream: true });
+        }
+        const cidWebsite = string.substring(138, 184)
+        const streamWebsite = ipfs.cat(cidWebsite);
+        let websiteLink_ = '';
+        for await (const chunk of streamWebsite) {
+            websiteLink_ += decoder.decode(chunk, { stream: true });
+        }
+        setTwitterLink(twitterLink_);
+        setTelegramLink(telegramLink_);
+        setWebsiteLink(websiteLink_);
+    }
+    fetchLink();
+  });
   useEffect(() => {
     const fetchData = async () => {
       const summary = await Pool(poolAddress).methods.getSummary().call();
@@ -413,24 +447,6 @@ export default () => {
   let burnEnabled, manualBuyBack;
   poolSummary.burnEnabled ? burnEnabled = "YES" : burnEnabled = "NO";
   poolSummary.manualBuyBack ? manualBuyBack = "YES" : manualBuyBack = "NO";
-
-  const items = [
-    {
-      key:"1",
-      // header: "8996",
-      meta: "Twitter"
-    },
-    {
-      key:"2",
-      // header: "8996",
-      meta: "Telegram"
-    },
-    {
-      key:"3",
-      // header: "8996",
-      meta: "Website"
-    }
-  ];
   return (
     <Layout>
       <h3>Discount Sale Detail</h3>
@@ -446,12 +462,19 @@ export default () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column>
-            <Card.Group items={items} itemsPerRow={3} />
+            <Button.Group attached='top' style={{"padding": "10", "margin":"10"}}>
+              <Link href={twitterLink}>
+                <Button>Twitter</Button>
+              </Link>
+              <Link href={telegramLink}>
+                <Button>Telegram</Button>
+              </Link>
+              <Link href={websiteLink}>
+                <Button>Website</Button>
+              </Link>
+            </Button.Group>
             <p>
-              Now you can browse privately, and other people who use this device
-              won’t see your activity. However, downloads, bookmarks and reading
-              list items will be saved. Learn more Chrome won’t save the
-              following information:
+              Token Description...
             </p>
             <Progress percent={poolSummary.alreadySold} success>
               Already Sold: {poolSummary.alreadySold}%
@@ -508,10 +531,7 @@ export default () => {
               <strong>Disclaimer</strong>:
             </h4>
             <p>
-              Now you can browse privately, and other people who use this device
-              won’t see your activity. However, downloads, bookmarks and reading
-              list items will be saved. Learn more Chrome won’t save the
-              following information:
+              Discount Sale is decentralised service. Anyone can list discount token anytime. Please do your own research before you contribute. Discount Sale is not liable for any loss.
             </p>
           </Grid.Column>
           <Grid.Column>

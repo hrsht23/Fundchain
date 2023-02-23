@@ -20,9 +20,9 @@ export default () => {
 		// </Menu>
 		<Header as="h3" block>
 		<div style={{float: "right"}}>
-			<Icon link name="bell outline" size="large" />
-			<Icon link name="telegram" size="large" />
 			<Icon link name="question circle outline" size="large" />
+			<Icon link name="telegram" size="large" />
+			<Icon link name="bell outline" size="large" />
 		</div>
 		<Input
 			size="mini"
